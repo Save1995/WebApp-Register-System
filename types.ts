@@ -38,3 +38,5 @@ export interface Registration {
 }
 
 export type Page = 'home' | 'courses' | 'faq' | 'about' | 'admin';
+
+export type AdminView = 'dashboard' | 'courses' | 'registrations';

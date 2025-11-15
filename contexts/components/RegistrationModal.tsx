@@ -1,7 +1,7 @@
 
-// Fix: Corrected the import statement for React and useState.
 import React, { useState } from 'react';
 import type { Course } from '../../types';
+import { useToast } from '../../hooks/useToast';
 
 interface RegistrationModalProps {
   course: Course;
@@ -23,7 +23,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ course, onClose }
   const [documents, setDocuments] = useState<FileList | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
+  const addToast = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -61,9 +61,13 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ course, onClose }
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      setIsSuccess(true);
+      addToast(`ลงทะเบียนหลักสูตร "${course.courseName}" สำเร็จ!`, 'success');
+      onClose();
+
     } catch (err) {
-      setError('เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง');
+      const errorMessage = 'เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง';
+      setError(errorMessage);
+      addToast(errorMessage, 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -90,25 +94,6 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ course, onClose }
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
           </div>
           
-          {isSuccess ? (
-            <div className="text-center py-12 px-6 bg-green-50 rounded-lg">
-                <svg className="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <h2 className="text-2xl font-bold text-gray-800 mt-4">ลงทะเบียนสำเร็จ!</h2>
-                <p className="text-gray-700 mt-3">
-                    คุณได้ลงทะเบียนสำหรับหลักสูตร: <br />
-                    <strong className="font-semibold text-blue-700">{course.courseName}</strong>
-                </p>
-                <p className="text-gray-600 mt-4">
-                    ระบบได้บันทึกข้อมูลของคุณแล้ว และได้ส่งเอกสารยืนยันไปยังอีเมลของคุณ
-                </p>
-                <button 
-                    onClick={onClose}
-                    className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg"
-                >
-                    ตกลง
-                </button>
-            </div>
-          ) : (
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -172,7 +157,6 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ course, onClose }
                 </button>
               </div>
             </form>
-          )}
         </div>
       </div>
     </div>

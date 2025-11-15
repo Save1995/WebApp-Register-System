@@ -25,6 +25,7 @@ const CourseModal: React.FC<CourseModalProps> = ({ isOpen, onClose, onSave, cour
   };
 
   const [formData, setFormData] = useState(initialFormState);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (course) {
@@ -53,10 +54,15 @@ const CourseModal: React.FC<CourseModalProps> = ({ isOpen, onClose, onSave, cour
     setFormData(prev => ({ ...prev, [id]: id === 'maxParticipants' ? parseInt(value, 10) || 0 : value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const dataToSave = course ? { ...formData, courseId: course.courseId, currentParticipants: course.currentParticipants } : formData;
-    onSave(dataToSave);
+    setIsSaving(true);
+    try {
+      const dataToSave = course ? { ...formData, courseId: course.courseId, currentParticipants: course.currentParticipants } : formData;
+      await onSave(dataToSave);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -131,8 +137,12 @@ const CourseModal: React.FC<CourseModalProps> = ({ isOpen, onClose, onSave, cour
             <button type="button" onClick={onClose} className="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors">
               ยกเลิก
             </button>
-            <button type="submit" className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              บันทึก
+            <button 
+                type="submit" 
+                disabled={isSaving}
+                className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300 disabled:cursor-wait"
+            >
+              {isSaving ? 'กำลังบันทึก...' : 'บันทึก'}
             </button>
           </div>
         </form>

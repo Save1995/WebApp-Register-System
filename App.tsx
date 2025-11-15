@@ -4,16 +4,18 @@ import Sidebar from './contexts/components/Sidebar';
 import Header from './contexts/components/Header';
 import Footer from './contexts/components/Footer';
 import LoginModal from './contexts/components/LoginModal';
-import HomeView from './contexts/components/views/HomeView';
-import CoursesView from './contexts/components/views/CoursesView';
-import FaqView from './contexts/components/views/FaqView';
-import AboutView from './contexts/components/views/AboutView';
-import AdminDashboardView from './contexts/components/views/AdminDashboardView';
+import HomeView from './hooks/views/HomeView';
+import CoursesView from './hooks/views/CoursesView';
+import FaqView from './hooks/views/FaqView';
+import AboutView from './hooks/views/AboutView';
+import AdminDashboardView from './hooks/views/AdminDashboardView';
 import { useAuth } from './hooks/useAuth';
-import type { Page } from './types';
+import type { Page, AdminView } from './types';
+import ToastContainer from './contexts/components/ToastContainer';
 
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<Page>('home');
+  const [adminView, setAdminView] = useState<AdminView>('dashboard');
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useAuth();
@@ -23,6 +25,21 @@ const App: React.FC = () => {
       setActivePage('home');
     }
   }, [user, activePage]);
+  
+  const handleSetActivePage = (page: Page) => {
+    setActivePage(page);
+    if (page !== 'admin') {
+      // Reset to dashboard when leaving admin section
+      setAdminView('dashboard');
+    }
+    setSidebarOpen(false);
+  };
+  
+  const handleSetActiveAdminView = (view: AdminView) => {
+    setActivePage('admin');
+    setAdminView(view);
+    setSidebarOpen(false);
+  }
 
   const renderContent = () => {
     switch (activePage) {
@@ -35,7 +52,7 @@ const App: React.FC = () => {
       case 'about':
         return <AboutView />;
       case 'admin':
-        return user ? <AdminDashboardView /> : <HomeView />;
+        return user ? <AdminDashboardView activeView={adminView} /> : <HomeView />;
       default:
         return <HomeView />;
     }
@@ -45,10 +62,12 @@ const App: React.FC = () => {
     <div className="flex h-screen bg-gray-100 text-gray-800">
       <Sidebar 
         activePage={activePage} 
-        setActivePage={setActivePage} 
+        setActivePage={handleSetActivePage} 
         onLoginClick={() => setLoginModalOpen(true)}
         isOpen={isSidebarOpen}
         setIsOpen={setSidebarOpen}
+        activeAdminView={adminView}
+        setActiveAdminView={handleSetActiveAdminView}
       />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header sidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -60,6 +79,7 @@ const App: React.FC = () => {
         <Footer />
       </div>
       {isLoginModalOpen && <LoginModal onClose={() => setLoginModalOpen(false)} />}
+      <ToastContainer />
     </div>
   );
 };
