@@ -1,0 +1,5 @@
+{
+  "name": "Online Course Registration System",
+  "description": "A web application for online course registration for the College of Public Health Administrators, featuring a user-facing registration portal and an admin dashboard for course management.",
+  "requestFramePermissions": []
+}
