@@ -3,7 +3,7 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-800 text-white py-4">
+    <footer className="bg-gray-800 dark:bg-gray-900 text-white py-4">
       <div className="container mx-auto px-6 text-center">
         <p>© 2025 วิทยาลัยนักบริหารสาธารณสุข | ออกแบบ By.Pantamit</p>
         <div className="mt-2 text-gray-400 text-sm flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-0">

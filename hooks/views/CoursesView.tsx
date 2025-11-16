@@ -40,7 +40,7 @@ const CoursesView: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">หลักสูตรที่เปิดรับสมัคร</h2>
+      <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">หลักสูตรที่เปิดรับสมัคร</h2>
       {courses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map(course => (
@@ -52,8 +52,8 @@ const CoursesView: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-10 bg-white rounded-lg shadow">
-            <p className="text-gray-500">ไม่มีหลักสูตรที่เปิดรับสมัครในขณะนี้</p>
+        <div className="text-center py-10 bg-white dark:bg-gray-800 rounded-lg shadow">
+            <p className="text-gray-500 dark:text-gray-400">ไม่มีหลักสูตรที่เปิดรับสมัครในขณะนี้</p>
         </div>
       )}
 

@@ -4,7 +4,7 @@ import Sidebar from './contexts/components/Sidebar';
 import Header from './contexts/components/Header';
 import Footer from './contexts/components/Footer';
 import LoginModal from './contexts/components/LoginModal';
-import HomeView from './hooks/views/HomeView';
+import HomeView from './HomeView';
 import CoursesView from './hooks/views/CoursesView';
 import FaqView from './hooks/views/FaqView';
 import AboutView from './hooks/views/AboutView';
@@ -59,7 +59,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 text-gray-800">
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
       <Sidebar 
         activePage={activePage} 
         setActivePage={handleSetActivePage} 
@@ -71,7 +71,7 @@ const App: React.FC = () => {
       />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header sidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
             {renderContent()}
           </div>

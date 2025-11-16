@@ -37,6 +37,26 @@ export interface Registration {
   status: 'confirmed' | 'pending' | 'cancelled';
 }
 
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export interface ContactInfo {
+  phone: string;
+  email: string;
+  address: string;
+}
+
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  postedDate: string;
+  type: 'info' | 'success' | 'warning';
+}
+
 export type Page = 'home' | 'courses' | 'faq' | 'about' | 'admin';
 
-export type AdminView = 'dashboard' | 'courses' | 'registrations';
+export type AdminView = 'dashboard' | 'courses' | 'registrations' | 'cms' | 'settings_contact' | 'settings_faq';
